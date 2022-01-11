@@ -1,29 +1,24 @@
-import json
-import os
-from flask import Flask,jsonify,request
+import scripts
+from flask import Flask
 from flask_cors import CORS
+from flask import render_template, request
 
 
 app = Flask(__name__)
 CORS(app)
 
 
-# @app.route("/price/", methods=['GET'])
-# def return_price():
-#     date = request.args.get('date')
-#     month = request.args.get('month')
-#     year = request.args.get('year')
-#     price = my_bitcoin_predictor.predict(date, month, year)
-#     price_dict = {
-#         'model': 'mlp',
-#         'price': price,
-#         }
-#     return jsonify(price_dict)
-
-
-@app.route("/", methods=['GET'])
+@app.route("/", methods=["GET", "POST"])
 def default():
-    return "<h1> Welcome to bitcoin price predictor <h1>"
+    if request.method == "POST":
+        sentence = request.form["sentence"]
+        prediction = scripts.predict(sentence)
+        return render_template(
+            "index.html",
+            previous_sentence=sentence,
+            prediction=prediction)
+    else:
+        return render_template("index.html")
 
 
 if __name__ == "__main__":

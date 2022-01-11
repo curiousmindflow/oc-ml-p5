@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Auto-tagging</title>
+</head>
+<body>
+    <h1>Auto-tagging project</h1>
+
+    <form action="/" method="post">
+        <label for="sentence">The sentence you want the tag for</label>
+        <input type="text" id="sentence" name="sentence">
+
+        <input type="submit" value="Submit">
+    </form>
+
+{% if previous_sentence %}
+    <p>{{ previous_sentence }}</p>
+    <p>{{ prediction }}</p>
+{% endif %}
+</body>
+</html>
