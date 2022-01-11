@@ -1,9 +1,37 @@
 import re
 from bs4 import BeautifulSoup as bs
+import pickle
 import nltk
 from nltk import pos_tag
 from nltk.corpus import stopwords, wordnet
 from nltk.stem import SnowballStemmer, WordNetLemmatizer
+# from sklearn.preprocessing import MultiLabelBinarizer
+from sklearn.multiclass import OneVsRestClassifier
+# from sklearn.linear_model import LogisticRegression
+import pandas as pd
+
+
+def predict(sentence):
+    sentence_preprocessed = preprocess_sentence(sentence)
+    model, tfidf_vectorizer, labels = deserialize_model()
+    sentence_tfidf = tfidf_vectorizer.transform([sentence_preprocessed])
+    prediction = model.predict(sentence_tfidf)[0]
+    prediction_dataframe = pd.DataFrame(
+        data={"IsPresent": prediction, "Label": labels})
+    final_predictions = prediction_dataframe[
+        prediction_dataframe["IsPresent"] == 1
+        ]["Label"].values.tolist()
+    return final_predictions
+
+
+def deserialize_model():
+    with open("model.pkl", "rb") as handle:
+        model: OneVsRestClassifier = pickle.load(handle)
+    with open("tfidf_vectorizer.pkl", "rb") as handle:
+        tfidf_vectorizer = pickle.load(handle)
+    with open("labels.pkl", "rb") as handle:
+        labels = pickle.load(handle)
+    return model, tfidf_vectorizer, labels
 
 
 def preprocess_sentence(sentence):
@@ -84,3 +112,13 @@ def stemmize(cell):
     stemmer = SnowballStemmer("english")
     stemmed_tokens = [stemmer.stem(token) for token in cell]
     return stemmed_tokens
+
+
+if __name__ == "__main__":
+    result = predict(
+        "<p>i would like to create a sql \
+        script to seed the database when \
+        my program first booooot 000 \
+        <code>something that will be \
+        removed</code></p>")
+    print(result)
