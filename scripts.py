@@ -5,9 +5,7 @@ import nltk
 from nltk import pos_tag
 from nltk.corpus import stopwords, wordnet
 from nltk.stem import SnowballStemmer, WordNetLemmatizer
-# from sklearn.preprocessing import MultiLabelBinarizer
 from sklearn.multiclass import OneVsRestClassifier
-# from sklearn.linear_model import LogisticRegression
 import pandas as pd
 
 
