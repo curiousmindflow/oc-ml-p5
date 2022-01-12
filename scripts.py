@@ -9,6 +9,10 @@ from sklearn.multiclass import OneVsRestClassifier
 import pandas as pd
 
 
+def download_nltk_resources():
+    nltk.download('stopwords')
+
+
 def predict(sentence):
     sentence_preprocessed = preprocess_sentence(sentence)
     model, tfidf_vectorizer, labels = deserialize_model()
