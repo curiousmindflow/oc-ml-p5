@@ -22,5 +22,4 @@ def default():
 
 
 if __name__ == "__main__":
-    scripts.download_nltk_resources()
     app.run()
