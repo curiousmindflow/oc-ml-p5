@@ -1,3 +1,5 @@
 notes.txt
 data/raw_data.csv
 data/data_cleaned.csv
+stackoverflow_posts_1m.csv
+stackoverflow_posts_preprocessed.csv
